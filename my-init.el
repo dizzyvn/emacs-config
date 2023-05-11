@@ -22,5 +22,10 @@
 (require 'my-org)
 (require 'my-ui)
 
+;; Finally load local config for per host
+(defvar local-config-file (expand-file-name "my-local-config.el"))
+(when (file-exists-p local-config-file)
+  (load local-config-file nil 'nomessage))
+
 (provide 'my-init)
 ;;; my-org.el ends here
