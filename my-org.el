@@ -226,16 +226,36 @@
 (global-set-key (kbd "C-c n v") #'org-roam-node-visit)
 (global-set-key (kbd "C-c n i") #'org-roam-node-insert)
 
+
+;; First define a function to query global org property
+(defun org-global-props (&optional property buffer)
+  "Get the plists of global org properties of current buffer."
+  (unless property (setq property "PROPERTY"))
+  (with-current-buffer (or buffer (current-buffer))
+    (org-element-map (org-element-parse-buffer) 'keyword (lambda (el) (when (string-match property (org-element-property :key el)) el)))))
+
+(defun org-global-prop-value (key)
+  "Get global org property KEY of current buffer."
+  (org-element-property :value (car (org-global-props key))))
+
 ;; Limit the size of inline image
 ;; https://stackoverflow.com/questions/36465878/how-to-make-inline-images-responsive-in-org-mode
-;; (defun org-image-resize (frame)
-;;   (when (derived-mode-p 'org-mode)
-;;     (if (< (window-total-width) 100)
-;;         (setq org-image-actual-width (- (window-pixel-width) 20))
-;;       (setq org-image-actual-width (* 100 (window-font-width))))
-;;     (org-redisplay-inline-images)))
+;; We additionally add
+(defun org-image-resize (frame)
+  (condition-case nil
+    (when (derived-mode-p 'org-mode)
+      (let* ((inline-width-string (org-global-prop-value "INLINE_WIDTH")))
+        (when inline-width-string
+          (let* ((inline-width (string-to-number inline-width-string)))
+            (if (< (window-total-width) inline-width)
+                (setq org-image-actual-width (- (window-pixel-width) 20))
+              (setq org-image-actual-width (* inline-width (window-font-width))))
+            (org-redisplay-inline-images)))))
+    (error (c)
+           (format t "We caught a condition.~&")
+           (values 0 c))))
 
-;; (add-hook 'window-size-change-functions 'org-image-resize)
+(add-hook 'window-size-change-functions 'org-image-resize)
 
 (provide 'my-org)
 ;;; my-org.el ends here
