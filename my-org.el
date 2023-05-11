@@ -11,13 +11,18 @@
 
 ;;; Code:
 
+(defvar my/org-roam-directory "/Users/dizzy/Dropbox/organizer/roam")
+(defvar my/org-agenda-files '("~/Dropbox/organizer/agenda"
+                              "~/Dropbox/organizer/beorg"))
+(defvar my/org-inbox-file "~/Dropbox/organizer/beorg/inbox.org")
+(defvar my/org-slipbox-file "~/Dropbox/organizer/beorg/slipbox.org")
+(defvar my/org-journal-file "~/Dropbox/organizer/beorg/journal.org")
+
 (crafted-package-install-package 'org-modern)
 (crafted-package-install-package 'org-roam)
 
 ;; Setup agenda files
-(customize-set-variable 'org-agenda-files
-                        '("~/Dropbox/organizer/agenda"
-                          "~/Dropbox/organizer/beorg"))
+(customize-set-variable 'org-agenda-files my/org-agenda-files)
 
 ;; Agenda commands
 (global-set-key (kbd "C-c a") #'org-agenda)
@@ -55,26 +60,22 @@
 
 ;; Set capture template
 (customize-set-variable 'org-capture-templates
-                        `(("p" "Protocol" entry (file+headline ,"~/Dropbox/organizer/roam/inbox.org" "Inbox")
-                           "* %^{Title}\nSource: %u, %c\n%?\n#+BEGIN_QUOTE\n%i\n#+END_QUOTE\n" :empty-lines 1 :prepend t)
-                          ("L" "Protocol Link" entry (file+headline ,"~/Dropbox/organizer/roam/slip-box.org" "Inbox")
-                           "* %? [[%:link][%:description]] \n" :empty-lines 1 :prepend t)
-                          ("t" "Inbox" entry  (file "~/Dropbox/organizer/beorg/inbox.org")
+                        `(("t" "Inbox" entry  (file ,my/org-inbox-file)
                            ,(concat "* TODO %?\n"
                                     "/Entered on/ %U"))
-                          ("r" "Read" entry  (file "~/Dropbox/organizer/beorg/inbox.org")
+                          ("r" "Read" entry  (file ,my/org-inbox-file)
                            ,(concat "* TODO Read %a\n"
                                     "/Entered on/ %U\n"))
-                          ("i" "interupt" entry (file "~/Dropbox/organizer/beorg/inbox.org")
+                          ("i" "interupt" entry (file ,my/org-inbox-file)
                            ,(concat "* TODO %?\n"
                                     "/Entered on/ %U\n")
                            :clock-in :clock-resume)
-                          ("f" "Follow" entry  (file "~/Dropbox/organizer/beorg/inbox.org")
+                          ("f" "Follow" entry  (file ,my/org-inbox-file)
                            ,(concat "* TODO %?\n"
                                     "/Entered on/ %U\n/From/ %a"))
-                          ("s" "Slipbox" entry  (file "~/Dropbox/organizer/beorg/slipbox.org")
+                          ("s" "Slipbox" entry  (file ,my/org-slipbox-file)
                            "* %?\n")
-                          ("j" "Journal" entry  (file+datetree "~/Dropbox/organizer/beorg/journal.org")
+                          ("j" "Journal" entry  (file+datetree ,my/org-journal-file)
                            "** /%<%H:%M>/ %?\n%K %a\n")))
 
 ;; Ask for effort when clock in
@@ -192,10 +193,10 @@
                           (search category-keep)))
 
 ;; Setup org-roam
-(with-eval-after-load 'org-oroam
+(with-eval-after-load 'org-roam
   (customize-set-variable 'org-roam-v2-ack t)
   (customize-set-variable 'org-roam-db-update-method 'immediate)
-  (customize-set-variable 'org-roam-directory "/Users/dizzy/Dropbox/organizer/roam")
+  (customize-set-variable 'org-roam-directory my/org-roam-directory)
   (customize-set-variable 'org-roam-capture-templates
                           '(("m" "main" plain
                              "%?"
