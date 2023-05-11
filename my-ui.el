@@ -10,7 +10,6 @@
 ;; Use doom-themes
 (crafted-package-install-package 'doom-themes)
 (crafted-package-install-package 'vertico-posframe)
-
 (require 'echo-bell)
 
 ;; Disable splash-buffer
@@ -37,10 +36,10 @@
 (setq-default fringe-indicator-alist (assq-delete-all 'truncation fringe-indicator-alist))
 
 ;; Use posframe to show menu buffer on the top of the frame
-(customize-set-variable 'vertico-count 15)
-(customize-set-variable 'verticle-resize nil)
+(customize-set-variable 'vertico-count 12)
+(customize-set-variable 'vertico-resize 'grow-only)
 (vertico-posframe-mode 1)
-
+(customize-set-variable 'vertico-posframe-width 150)
 
 (customize-set-variable 'vertico-posframe-poshandler #'my/posframe-poshandler-frame-top-center-with-offset)
 (defun my/posframe-poshandler-frame-top-center-with-offset (info)
