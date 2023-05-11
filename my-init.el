@@ -21,7 +21,7 @@
 
 (require 'my-def)
 ;; Override local configuration for per host
-(defvar local-config-file (expand-file-name "my-local-config.el"))
+(defvar local-config-file (expand-file-name "custom-modules/my-local-config.el" crafted-config-path))
 (when (file-exists-p local-config-file)
   (load local-config-file nil 'nomessage))
 
