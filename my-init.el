@@ -19,13 +19,16 @@
 (require 'crafted-updates)     ; Tools to upgrade Crafted Emacs
 (require 'crafted-windows)     ; Window management configuration
 
-(require 'my-org)
-(require 'my-ui)
-
-;; Finally load local config for per host
+(require 'my-def)
+;; Override local configuration for per host
 (defvar local-config-file (expand-file-name "my-local-config.el"))
 (when (file-exists-p local-config-file)
   (load local-config-file nil 'nomessage))
+
+;; Load modules
+(require 'my-org)
+(require 'my-ui)
+
 
 (provide 'my-init)
 ;;; my-org.el ends here
