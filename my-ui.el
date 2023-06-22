@@ -10,13 +10,15 @@
 ;; Use doom-themes
 (crafted-package-install-package 'doom-themes)
 (crafted-package-install-package 'vertico-posframe)
+(crafted-package-install-package 'rainbow-mode)
 (require 'echo-bell)
+(require 'my-light-theme)
 
 ;; Disable splash-buffer
 (customize-set-variable 'crafted-startup-inhibit-splash t)
 
 ;; Custom theme
-(consult-theme 'doom-one-light)
+(consult-theme 'my-light)
 (customize-set-variable 'echo-bell-background nil)
 
 ;; Custom bell
@@ -27,7 +29,7 @@
 ;; Custom font
 (custom-set-variables
  '(crafted-ui-default-font
-   '(:font "PlemolJP Console NF" :weight normal :height 140)))
+   '(:font "PlemolJP Console NF" :weight normal :height 150)))
 (set-face-attribute 'default nil :font "PlemolJP Console NF")
 (set-face-attribute 'fixed-pitch nil :font "PlemolJP Console NF")
 (set-face-attribute 'variable-pitch nil :font "PlemolJP Console NF")
@@ -52,6 +54,13 @@ The structure of INFO can be found in docstring of
               (plist-get info :posframe-width))
            2)
         0))
+
+;; Hide async shell command buffer
+(add-to-list 'display-buffer-alist '("*Async Shell Command*" display-buffer-no-window (nil)))
+
+;; Rainbow mode to show color for color code
+(add-hook 'prog-mode-hook 'rainbow-mode)
+
 
 (provide 'my-ui)
 ;;; crafted-ui.el ends here

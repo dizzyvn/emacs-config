@@ -19,6 +19,12 @@
 (require 'crafted-updates)     ; Tools to upgrade Crafted Emacs
 (require 'crafted-windows)     ; Window management configuration
 
+;; Some packages
+(crafted-package-install-package 'async)
+
+;; Some binding
+(global-set-key (kbd "C-c r") #'consult-recent-file)
+
 (require 'my-def)
 ;; Override local configuration for per host
 (defvar local-config-file (expand-file-name "custom-modules/my-local-config.el" crafted-config-path))

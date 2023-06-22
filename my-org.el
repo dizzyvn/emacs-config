@@ -13,6 +13,11 @@
 
 (crafted-package-install-package 'org-modern)
 (crafted-package-install-package 'org-roam)
+(crafted-package-install-package 'visual-fill-column)
+
+(let ((default-directory (expand-file-name "~/.crafted-emacs/custom-modules")))
+  (normal-top-level-add-subdirs-to-load-path))
+(require 'org-download)
 
 ;; Setup agenda files
 (customize-set-variable 'org-agenda-files my/org-agenda-files)
@@ -84,7 +89,7 @@
         (org-set-property "Effort" effort)))))
 
 ;; Set indentation to 4 and turn on auto indent
-(customize-set-variable 'org-indent-indentation-per-level 4)
+(customize-set-variable 'org-indent-indentation-per-level 2)
 (customize-set-variable 'org-startup-indented t)
 (customize-set-variable 'org-startup-truncated nil)
 
@@ -133,11 +138,11 @@
   (add-to-list 'org-structure-template-alist '("md" . "src markdown")))
 
 ;; User org-modern for beautiful org
+(add-hook 'org-mode-hook 'visual-line-mode)
 (add-hook 'org-mode-hook 'org-modern-mode)
 (add-hook 'org-agenda-finalize 'org-modern-agenda)
-
-(customize-set-variable 'org-modern-table nil)
 (customize-set-variable 'org-modern-star '("⧉" "◉" "⁖" "❖"))
+(customize-set-variable 'org-modern-table nil)
 (customize-set-variable 'org-modern-list nil)
 (customize-set-variable 'org-modern-todo nil)
 (customize-set-variable 'org-modern-timestamp nil)
@@ -146,13 +151,15 @@
 (customize-set-variable 'org-modern-statistics nil)
 (customize-set-variable 'org-modern-progress nil)
 (customize-set-variable 'org-modern-priority nil)
-(customize-set-variable 'org-modern-table-vertical 1)
-(customize-set-variable 'org-modern-table-horizontal 0.1)
+
 
 ;; Also hide markers and use pretty entities
-(customize-set-variable 'org-hide-emphasis-markers nil)
+(customize-set-variable 'org-hide-emphasis-markers t)
 (customize-set-variable 'org-pretty-entities t)
 (customize-set-variable 'org-ellipsis "…")
+(font-lock-add-keywords 'org-mode
+                        '(("^ *\\([-]\\) "
+                           (0 (prog1 () (compose-region (match-beginning 1) (match-end 1) "•"))))))
 
 ;; Custom agenda
 (customize-set-variable 'org-agenda-inhibit-startup t)
@@ -256,6 +263,18 @@
            (values 0 c))))
 
 (add-hook 'window-size-change-functions 'org-image-resize)
+
+;; org-download
+(customize-set-variable 'org-download-image-dir "~/Dropbox/screenshot")
+(customize-set-variable 'org-download-heading-lvl nil)
+(customize-set-variable 'org-download-screenshot-method "screencapture -i %s")
+(org-download-enable)
+(define-key org-mode-map (kbd "C-M-y") #'org-download-clipboard)
+
+;; Visual fill column for margin
+(customize-set-variable 'visual-fill-column-width 100)
+(customize-set-variable 'visual-fill-column-center-text t)
+(add-hook 'org-mode-hook 'visual-fill-column-mode)
 
 (provide 'my-org)
 ;;; my-org.el ends here
