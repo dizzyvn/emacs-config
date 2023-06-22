@@ -13,7 +13,7 @@
 (require 'crafted-pdf-reader)  ; Setup pdf-tools for reading PDF files in Emacs
 (require 'crafted-project)     ; built-in alternative to projectile
 (require 'crafted-python)      ; A configuration for programming in Python
-(require 'crafted-screencast)  ; show current command and binding in modeline
+;; (require 'crafted-screencast)  ; show current command and binding in modeline
 (require 'crafted-speedbar)    ; built-in file-tree
 (require 'crafted-ui)          ; Better UI experience (modeline etc.)
 (require 'crafted-updates)     ; Tools to upgrade Crafted Emacs
